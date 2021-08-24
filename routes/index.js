@@ -1,10 +1,10 @@
-var express = require('express');
-var router = express.Router();
+const express = require('express');
+const router = express.Router();
 
 /* GET home page. */
-router.get('/', function(req, res, next) {
-  res.send(req.csrfToken());
-  res.render('send', {csrfToken: req.csrfToken()});
+router.get('/', (req, res, next)=> {
+  res.send('Welcome to api express server');
 });
+
 
 module.exports = router;

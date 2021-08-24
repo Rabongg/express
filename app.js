@@ -7,6 +7,7 @@ var ejs = require('ejs');
 var csrf = require('csurf');
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
+const tokenRouter = require('./routes/token');
 const session = require('express-session');
 
 var app = express();
@@ -32,23 +33,16 @@ app.use(
 // app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
-// app.use(cookieParser());
-// app.use(express.static(path.join(__dirname, 'public')));
+app.use(cookieParser());
+app.use(express.static(path.join(__dirname, 'public')));
 app.use(csrf());
-// app.use('/', indexRouter);
-// app.use('/users', usersRouter);
+app.use('/', indexRouter);
+app.use('/tokens', tokenRouter);
+app.use('/users', usersRouter);
 
-app.get('/form', function (req, res) {
-  // pass the csrfToken to the view
-  console.log(req.csrfToken());
-  res.render('send', { csrfToken: req.csrfToken() });
-})
 
-app.post('/process', function (req, res) {
-  console.log(req.session);
-  console.log(req.body);
-  res.send('data is being processed');
-})
+
+/* used for csrf Token*/
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
