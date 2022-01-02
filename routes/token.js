@@ -1,4 +1,5 @@
-const express = require('express');
+// const express = require('express');
+import express from 'express';
 const router = express.Router();
 
 router.get('/form', (req, res, next)=> {
@@ -11,4 +12,5 @@ router.post('/process', function (req, res) {
   res.send('data is being processed');
 })
 
-module.exports = router;
+export default router;
+// module.exports = router;

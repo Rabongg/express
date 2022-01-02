@@ -1,16 +1,19 @@
-var createError = require('http-errors');
-var express = require('express');
-var path = require('path');
-var cookieParser = require('cookie-parser');
-var logger = require('morgan');
-var ejs = require('ejs');
-var csrf = require('csurf');
-var indexRouter = require('./routes/index');
-var usersRouter = require('./routes/users');
-const tokenRouter = require('./routes/token');
-const session = require('express-session');
+import createError from 'http-errors';
+import express from 'express';
+import path from 'path';
+import cookieParser from 'cookie-parser';
+import logger from 'morgan';
+import ejs from 'ejs';
+import csrf from 'csurf';
+import indexRouter from './routes/index';
+import usersRouter from './routes/users';
+import tokenRouter from './routes/token';
+import session from 'express-session';
+import http from 'http';
 
-var app = express();
+const app = express();
+const __dirname = path.resolve();
+const port = process.env.PORT || '3000';
 
 // view engine setup
 app.engine('html', ejs.renderFile);
@@ -35,14 +38,11 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
+
 app.use(csrf());
 app.use('/', indexRouter);
 app.use('/tokens', tokenRouter);
 app.use('/users', usersRouter);
-
-
-
-/* used for csrf Token*/
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
@@ -60,4 +60,9 @@ app.use(function(err, req, res, next) {
   res.render('error');
 });
 
-module.exports = app;
+
+app.set('port', port);
+const server = http.createServer(app);
+server.listen(port, () => {
+  console.log(`Server is running on port ${port}`);
+});
