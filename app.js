@@ -8,6 +8,7 @@ import csrf from 'csurf';
 import indexRouter from './routes/index';
 import usersRouter from './routes/users';
 import tokenRouter from './routes/token';
+import intensiveRouter from './routes/intensive';
 import session from 'express-session';
 import http from 'http';
 
@@ -43,6 +44,7 @@ app.use(csrf());
 app.use('/', indexRouter);
 app.use('/tokens', tokenRouter);
 app.use('/users', usersRouter);
+app.use('/concentrations', intensiveRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

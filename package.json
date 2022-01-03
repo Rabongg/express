@@ -4,9 +4,10 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "start": "node --experimental-modules --es-module-specifier-resolution=node app.js"
+    "start": "nodemon --experimental-modules --es-module-specifier-resolution=node app.js"
   },
   "dependencies": {
+    "child_process": "^1.0.2",
     "cookie-parser": "~1.4.4",
     "csurf": "^1.11.0",
     "debug": "~2.6.9",
@@ -16,7 +17,7 @@
     "express-session": "^1.17.2",
     "http-errors": "~1.6.3",
     "morgan": "~1.9.1",
-    "nodemon": "^2.0.12",
+    "nodemon": "^2.0.15",
     "path": "^0.12.7",
     "redis": "^3.1.2",
     "serverless": "^2.52.1"
