@@ -1,5 +1,5 @@
 import express from 'express';
-import fibonacci from '../service/intensive';
+import fibonacci from '../service/fibonacci';
 import { fork } from 'child_process';
 import path from 'path';
 import { Worker, isMainThread, parentPort, workerData, threadId } from 'worker_threads';
@@ -56,8 +56,6 @@ router.get('/worker', async (req, res) => {
           reject(new Error(`Worker stopped with exit code ${code}`));
         }
       });
-    } else{
-      console.log(1);
     }
   } else {
     res.send('Please specify a number');
