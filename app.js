@@ -22,7 +22,7 @@ app.set('view engine', 'html');
 
 app.use(
   session({
-    name: 'hellohello',
+    name: 'whale',
     secret: 'AI34WsAkSN@%RuYhvjoX2G',
     resave: false,
     saveUninitialized: false,
