@@ -1,18 +1,18 @@
-import createError from 'http-errors';
 import express from 'express';
 import path from 'path';
 import cookieParser from 'cookie-parser';
-import logger from 'morgan';
+// import logger from 'morgan';
 import ejs from 'ejs';
 import csrf from 'csurf';
+import session from 'express-session';
+import http from 'http';
 import indexRouter from './routes/index';
 import usersRouter from './routes/users';
 import tokenRouter from './routes/token';
 import intensiveRouter from './routes/intensive';
-import session from 'express-session';
-import http from 'http';
 
 const app = express();
+// eslint-disable-next-line no-underscore-dangle
 const __dirname = path.resolve();
 const port = process.env.PORT || '3000';
 
@@ -31,7 +31,7 @@ app.use(
       sameSite: 'strict',
       httpOnly: true,
     },
-  })
+  }),
 );
 
 // app.use(logger('dev'));
@@ -45,23 +45,6 @@ app.use('/', indexRouter);
 app.use('/tokens', tokenRouter);
 app.use('/users', usersRouter);
 app.use('/concentrations', intensiveRouter);
-
-// catch 404 and forward to error handler
-app.use(function(req, res, next) {
-  next(createError(404));
-});
-
-// error handler
-app.use(function(err, req, res, next) {
-  // set locals, only providing error in development
-  res.locals.message = err.message;
-  res.locals.error = req.app.get('env') === 'development' ? err : {};
-  console.error(err);
-  // render the error page
-  res.status(err.status || 500);
-  res.render('error');
-});
-
 
 app.set('port', port);
 const server = http.createServer(app);

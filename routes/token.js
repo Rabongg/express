@@ -1,14 +1,15 @@
 import express from 'express';
+
 const router = express.Router();
 
-router.get('/form', (req, res, next)=> {
-  res.render('send', {csrfToken: req.csrfToken()});
-} )
+router.get('/form', (req, res) => {
+  res.render('send', { csrfToken: req.csrfToken() });
+});
 
-router.post('/process', function (req, res) {
+router.post('/process', (req, res) => {
   console.log(req.session);
   console.log(req.body);
   res.send('data is being processed');
-})
+});
 
 export default router;

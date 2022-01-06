@@ -1,10 +1,8 @@
 import express from 'express';
+import { Worker, isMainThread } from 'worker_threads';
 import fibonacci from '../service/fibonacci';
-import { fork } from 'child_process';
-import path from 'path';
-import { Worker, isMainThread, parentPort, workerData, threadId } from 'worker_threads';
-const router = express.Router();
 
+const router = express.Router();
 
 router.get('/', (req, res) => {
   const { num } = req.query;
@@ -17,7 +15,6 @@ router.get('/', (req, res) => {
     res.send('Please specify a number');
   }
 });
-
 
 // router.get('/child', (req, res) => {
 //   const { num } = req.query;
@@ -37,7 +34,6 @@ router.get('/', (req, res) => {
 //   }
 // });
 
-
 router.get('/worker', async (req, res) => {
   const { num } = req.query;
   if (num) {
@@ -52,14 +48,14 @@ router.get('/worker', async (req, res) => {
         console.error(err);
       });
       worker.on('exit', (code) => {
-        if(code !== 0) {
-          reject(new Error(`Worker stopped with exit code ${code}`));
+        if (code !== 0) {
+          console.log(`Worker stopped with exit code ${code}`);
         }
       });
     }
   } else {
     res.send('Please specify a number');
   }
-})
+});
 
 export default router;

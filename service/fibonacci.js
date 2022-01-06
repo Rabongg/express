@@ -4,6 +4,6 @@ const fibonacci = (num) => {
     return 1;
   }
   return fibonacci(num - 1) + fibonacci(num - 2);
-}
+};
 
 export default fibonacci;
