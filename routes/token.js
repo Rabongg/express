@@ -7,8 +7,6 @@ router.get('/form', (req, res) => {
 });
 
 router.post('/process', (req, res) => {
-  console.log(req.session);
-  console.log(req.body);
   res.send('data is being processed');
 });
 
