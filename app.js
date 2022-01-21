@@ -30,17 +30,13 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 const RedisStore = connectRedis(session);
 const redisClient = redis.createClient({
-  host: 'localhost',
+  host: '54.180.1.82',
   port: 6379,
 });
 
-redisClient.connect();
 // eslint-disable-next-line no-unused-vars
 redisClient.on('connect', (err) => {
   console.log('Connected to redis successfully');
-});
-redisClient.on('error', (err) => {
-  console.log(`Could not establish a connection with redis. ${err}`);
 });
 
 app.use(
