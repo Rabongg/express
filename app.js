@@ -6,6 +6,8 @@ import ejs from 'ejs';
 import csrf from 'csurf';
 import session from 'express-session';
 import http from 'http';
+import redis from 'redis';
+import connectRedis from 'connect-redis';
 import indexRouter from './routes/index';
 import usersRouter from './routes/users';
 import tokenRouter from './routes/token';
@@ -20,8 +22,30 @@ const port = process.env.PORT || '3000';
 app.engine('html', ejs.renderFile);
 app.set('view engine', 'html');
 
+// app.use(logger('dev'));
+app.use(express.json());
+app.use(express.urlencoded({ extended: false }));
+app.use(cookieParser());
+app.use(express.static(path.join(__dirname, 'public')));
+
+const RedisStore = connectRedis(session);
+const redisClient = redis.createClient({
+  host: 'localhost',
+  port: 6379,
+});
+
+redisClient.connect();
+// eslint-disable-next-line no-unused-vars
+redisClient.on('connect', (err) => {
+  console.log('Connected to redis successfully');
+});
+redisClient.on('error', (err) => {
+  console.log(`Could not establish a connection with redis. ${err}`);
+});
+
 app.use(
   session({
+    store: new RedisStore({ client: redisClient }),
     name: 'whale',
     secret: 'AI34WsAkSN@%RuYhvjoX2G',
     resave: false,
@@ -33,12 +57,6 @@ app.use(
     },
   }),
 );
-
-// app.use(logger('dev'));
-app.use(express.json());
-app.use(express.urlencoded({ extended: false }));
-app.use(cookieParser());
-app.use(express.static(path.join(__dirname, 'public')));
 
 app.use(csrf());
 app.use('/', indexRouter);
