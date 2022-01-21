@@ -8,10 +8,13 @@ import session from 'express-session';
 import http from 'http';
 import redis from 'redis';
 import connectRedis from 'connect-redis';
+import dotenv from 'dotenv';
 import indexRouter from './routes/index';
 import usersRouter from './routes/users';
 import tokenRouter from './routes/token';
 import intensiveRouter from './routes/intensive';
+
+dotenv.config();
 
 const app = express();
 // eslint-disable-next-line no-underscore-dangle
@@ -30,7 +33,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 const RedisStore = connectRedis(session);
 const redisClient = redis.createClient({
-  host: '54.180.1.82',
+  host: `${process.env.REDIS_HOST}`,
   port: 6379,
 });
 
