@@ -1,13 +1,15 @@
 import express from 'express';
-import userData from '../models/user.json';
-import makeToken from '../service/auth';
-import verifyToken from '../service/authmiddleware';
+import passport from 'passport';
 
 const router = express.Router();
 
 /* GET home page. */
-router.get('/', verifyToken, (req, res) => {
-  res.send('Welcome to api express server');
+router.get('/', (req, res) => {
+  if (req.user?.nickname) {
+    res.render('index', { user: req.user.nickname });
+  } else {
+    res.redirect('/login');
+  }
 });
 
 router.get('/login', (req, res) => {
@@ -22,15 +24,9 @@ router.get('/login', (req, res) => {
   }
 });
 
-router.post('/login', (req, res) => {
-  const { username, password } = req.body;
-  const value = userData.find((user) => user.username === username && user.password === password);
-  if (value === undefined) {
-    res.redirect('/login?fail=true');
-  } else {
-    const token = makeToken({ nickname: value.nickname });
-    res.render('index', { user: value.nickname, token });
-  }
-});
+router.post('/login', passport.authenticate('local', {
+  failureRedirect: '/login?fail=true',
+  successRedirect: '/',
+}));
 
 export default router;

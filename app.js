@@ -9,6 +9,8 @@ import http from 'http';
 import redis from 'redis';
 import connectRedis from 'connect-redis';
 import dotenv from 'dotenv';
+import passport from 'passport';
+import passportConfig from './service/passport';
 import indexRouter from './routes/index';
 import usersRouter from './routes/users';
 import tokenRouter from './routes/token';
@@ -34,7 +36,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 const RedisStore = connectRedis(session);
 const redisClient = redis.createClient({
   host: `${process.env.REDIS_HOST}`,
-  port: 6379,
+  port: `${process.env.REDIS_PORT}`,
 });
 
 // eslint-disable-next-line no-unused-vars
@@ -56,7 +58,9 @@ app.use(
     },
   }),
 );
-
+app.use(passport.initialize());
+app.use(passport.session());
+passportConfig();
 app.use(csrf());
 app.use('/', indexRouter);
 app.use('/tokens', tokenRouter);
